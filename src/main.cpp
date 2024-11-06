@@ -17,6 +17,7 @@ int main()
     Texture2D referenceImage = LoadTexture("assets/images/refs/main.png");
     Texture2D hpName = LoadTexture("assets/images/ui/spr_hpname_0.png");
     Font uiFont = LoadFont("assets/fonts/Mars_Needs_Cunnilingus.ttf");
+    Font determination = LoadFont("assets/fonts/determination-mono.ttf");
     Texture2D playerImage = LoadTexture("assets/images/ut-heart.png");
     Sound moveSound = LoadSound("assets/sound/sfx/menumove.wav");
 
@@ -63,11 +64,19 @@ int main()
         }
 
         BeginDrawing();
+
             ClearBackground(BLACK);
-
+            
             DrawTexture(referenceImage, 0, 0, {255, 255, 255, 0});
-
+            
             DrawTextEx(uiFont, (playerStats.name + "   LV 1").c_str(), (Vector2){30, 400}, 24, 0, WHITE);
+            if(playerStats.hp<10) {
+                DrawTextEx(uiFont, ("0" + std::to_string(playerStats.hp) + " / " + std::to_string(playerStats.maxhp)).c_str(), (Vector2){290.0f + (playerStats.maxhp * 1.2), 400}, 24, 0, WHITE);
+            }
+            else {
+                DrawTextEx(uiFont, (std::to_string(playerStats.hp) + " / " + std::to_string(playerStats.maxhp)).c_str(), (Vector2){290.0f + (playerStats.maxhp * 1.2), 400}, 24, 0, WHITE);
+            }
+           
 
             for (int i = 0; i < 4; ++i) {
                 DrawTextureRec(buttons[i], 
@@ -83,7 +92,10 @@ int main()
             DrawRectangle(275.0f, 400.0f, playerStats.maxhp * 1.2, 21.0f, {200, 0, 0, 255});
             DrawRectangle(275.0f, 400.0f, playerStats.hp * 1.2, 21.0f, YELLOW);
 
+            DrawTextEx(determination, "* The fact that the text looks\n\n  horrible makes me very angry.", (Vector2){52, 274}, 28, 0, WHITE);
+
             DrawTexture(playerImage, player.x, player.y, {255, 0, 0, 255});
+
         EndDrawing();
     }
     
@@ -95,6 +107,7 @@ int main()
     UnloadTexture(playerImage);
     UnloadTexture(referenceImage);
     UnloadFont(uiFont);
+    UnloadFont(determination);
     UnloadSound(moveSound);
     
     CloseWindow();
