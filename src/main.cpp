@@ -6,7 +6,7 @@ int main()
     constexpr int screenWidth = 640;
     constexpr int screenHeight = 480;
     
-    InitWindow(screenWidth, screenHeight, "RPG Writer");
+    InitWindow(screenWidth, screenHeight, "raylib undertale");
     InitAudioDevice();
     SetTargetFPS(30);
 
@@ -15,6 +15,7 @@ int main()
     Texture2D actButton = LoadTexture("assets/images/ui/bt/act.png");
     Texture2D itemButton = LoadTexture("assets/images/ui/bt/item.png");
     Texture2D mercyButton = LoadTexture("assets/images/ui/bt/mercy.png");
+    Texture2D referenceImage = LoadTexture("assets/images/refs/main.png");
     Texture2D hpName = LoadTexture("assets/images/ui/spr_hpname_0.png");
     Font uiFont = LoadFont("assets/fonts/Mars_Needs_Cunnilingus.ttf");
     Texture2D playerImage = LoadTexture("assets/images/ut-heart.png");
@@ -27,6 +28,14 @@ int main()
     const Vector2 buttonPositions[] = {
         {32, 432}, {185, 432}, {345, 432}, {500, 432}
     };
+
+    struct ArenaParams {
+        int x = 32;
+        int y = 250;
+        int w = 575;
+        int h = 140;
+    };
+    ArenaParams arena;
 
     Texture2D buttons[] = {fightButton, actButton, itemButton, mercyButton};
 
@@ -49,7 +58,9 @@ int main()
         BeginDrawing();
             ClearBackground(BLACK);
 
-            DrawTextEx(uiFont, "Chara   LV 1", (Vector2){30, 400}, 24, 0, WHITE);
+            DrawTexture(referenceImage, 0, 0, {255, 255, 255, 0});
+
+            DrawTextEx(uiFont, "Braden   LV 1", (Vector2){30, 400}, 24, 0, WHITE);
 
             for (int i = 0; i < 4; ++i) {
                 DrawTextureRec(buttons[i], 
@@ -59,6 +70,9 @@ int main()
             }
 
             DrawTexture(hpName, 240, 400, WHITE);
+
+            DrawRectangle(arena.x, arena.y, arena.w, arena.h, WHITE);
+            DrawRectangle(arena.x + 5, arena.y + 5, arena.w - 10, arena.h - 10, BLACK);
             DrawTexture(playerImage, player.x, player.y, {255, 0, 0, 255});
         EndDrawing();
     }
